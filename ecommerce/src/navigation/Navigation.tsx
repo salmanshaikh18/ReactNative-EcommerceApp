@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {FC} from 'react';
 import {navigationRef} from './NavigationUtil';
+import MainNavigator from './MainNavigator';
 
 const Stack = createNativeStackNavigator();
 
@@ -14,7 +15,7 @@ const Navigation: FC = () => {
         screenOptions={{headerShown: false}}
         initialRouteName="Splash">
         <Stack.Screen name="Splash" component={Splash} />
-        <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="MainNavigator" component={MainNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
