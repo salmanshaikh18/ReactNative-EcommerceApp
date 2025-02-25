@@ -1,23 +1,56 @@
-import {View, Text} from 'react-native';
-import React, {useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from '@store/reduxHooks';
-import {getHomeContent} from './api/actions';
+import {Platform, StyleSheet, Text, View} from 'react-native';
+import React from 'react';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import Animated, {
+  Extrapolate,
+  interpolate,
+  useAnimatedStyle,
+  useSharedValue,
+} from 'react-native-reanimated';
+import { screenHeight } from '@utils/Constants';
+import MenuHeader from './molecules/MenuHeader';
+import SearchBar from './molecules/SearchBar';
+import MainList from './templates/MainList';
 
-const Home = () => {
-  const dispatch = useAppDispatch();
-  const {data, loading, error} = useAppSelector(state => state.home);
+const index = () => {
+  const insets = useSafeAreaInsets();
 
-  useEffect(() => {
-    dispatch(getHomeContent(1));
-  }, []);
+  const scrollYGlobal = useSharedValue(0);
+
+  const moveUpStyle = useAnimatedStyle(() => {
+    const translateY = interpolate(
+      scrollYGlobal.value,
+      [0, 100],
+      [0, -100],
+      Extrapolate.CLAMP,
+    );
+    return {
+      transform: [{translateY: translateY}],
+    };
+  });
 
   return (
-    <View>
-      <Text>{JSON.stringify(data)}</Text>
-      <Text>{JSON.stringify(loading)}</Text>
-      <Text>{JSON.stringify(error)}</Text>
+    <View style={styles.container}>
+      <View style={{height: Platform.OS === 'android' ? insets.top : 0}}></View>
+      <Animated.View style={[moveUpStyle]}>
+        <View>
+          <MenuHeader scrollY={scrollYGlobal} />
+          <SearchBar />
+        </View>
+      </Animated.View>
+
+      <Animated.View style={[moveUpStyle, {height: screenHeight}]}>
+        <MainList scrollYGlobal={scrollYGlobal} />
+      </Animated.View>
     </View>
   );
 };
 
-export default Home;
+export default index;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+});
