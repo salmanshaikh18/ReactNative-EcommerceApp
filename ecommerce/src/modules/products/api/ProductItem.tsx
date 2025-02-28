@@ -1,6 +1,7 @@
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {RFValue} from 'react-native-responsive-fontsize';
+import UniversalAdd from '../atoms/UniversalAdd';
 
 const ProductItem = ({item, isOdd}: any) => {
   return (
@@ -24,6 +25,8 @@ const ProductItem = ({item, isOdd}: any) => {
           <View style={styles.hotDealContainer}>
             <Text style={styles.hotDealText}>Hot Deal</Text>
           </View>
+
+          <UniversalAdd item={item} />
         </View>
       </View>
     </View>

@@ -6,10 +6,14 @@ import {screenHeight} from '@utils/Constants';
 import {RFValue} from 'react-native-responsive-fontsize';
 import SearchBar from './atoms/SearchBar';
 import ProductItem from './api/ProductItem';
+import {useAppSelector} from '@store/reduxHooks';
+import {selectTotalItemsInCart} from '@modules/cart/api/slice';
 
 const Products = () => {
   const route = useRoute();
   const category = route?.params as any;
+
+  const count = useAppSelector(selectTotalItemsInCart);
 
   console.log('category: ', category);
   const [products, setProducts] = useState<any[]>([]);
@@ -35,7 +39,7 @@ const Products = () => {
   return (
     <View style={styles.container}>
       <SafeAreaView />
-      <SearchBar cartLength={2} />
+      <SearchBar cartLength={count} />
 
       <FlatList
         bounces={false}
