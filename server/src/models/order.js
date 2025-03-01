@@ -4,7 +4,7 @@ const ItemSchema = new Schema({
   product: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product",
-    requried: true,
+    required: true,
   },
   quantity: {
     type: Number,
@@ -27,7 +27,7 @@ const OrderSchema = new Schema(
       type: String,
     },
     items: {
-      type: ItemSchema,
+      type: [ItemSchema],
       required: true,
     },
     status: {

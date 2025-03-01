@@ -1,11 +1,4 @@
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {FlatList, Image, Text, TouchableOpacity, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {useRoute} from '@react-navigation/native';
 import {useAppSelector} from '@store/reduxHooks';
@@ -43,7 +36,7 @@ const Account = () => {
     }
   }, [item]);
 
-  const renderItem = ({item}: any) => {
+  const renderItem = ({item}: any) => (
     <View style={orderStyles.orderContainer}>
       <Image
         source={{uri: item?.product?.image_uri}}
@@ -53,11 +46,11 @@ const Account = () => {
         <Text
           style={
             orderStyles.itemName
-          }>{`${item?.quanity} x ${item.product.name}`}</Text>
-        <Text style={orderStyles.price}>Rs. ${item?.product?.price}</Text>
+          }>{`${item?.quantity} x ${item.product.name}`}</Text>
+        <Text style={orderStyles.price}>Rs. {item?.product?.price}</Text>
       </View>
-    </View>;
-  };
+    </View>
+  );
 
   return (
     <>
@@ -96,7 +89,7 @@ const Account = () => {
                 />
                 <Text style={orderStyles.address}>{item?.address}</Text>
                 <Text style={orderStyles.deliveryDate}>
-                  Deliver : ${formatDate(item?.deliveryDate)}
+                  Deliver : {formatDate(item?.deliveryDate)}
                 </Text>
                 <View style={orderStyles.statusContainer}>
                   <Text style={orderStyles.statusText}>{item?.status}</Text>

@@ -2,6 +2,7 @@ import { Order } from "../models/order.js";
 import { Transaction } from "../models/transaction.js";
 import { errorHandler } from "../utils/errorHandler.js";
 import Razorpay from "razorpay";
+import crypto from "crypto";
 
 export const createTransaction = async (req, res) => {
   const { amount, userId } = req.body;
@@ -18,7 +19,7 @@ export const createTransaction = async (req, res) => {
   };
 
   try {
-    if (!amount || userId) {
+    if (!amount || !userId) {
       return res.status(400).json({
         success: false,
         message: "Amount and userId is required!",
@@ -54,9 +55,8 @@ export const createOrder = async (req, res) => {
 
     const key_secret = process.env.RAZORPAY_SECRET;
 
-    const generated_signature = crypto
-      .createHmac("sha256", key_secret)
-      .update(razorpay_order_id + "|" + razorpay_payment_id)
+    const generated_signature = crypto.createHmac("sha256", key_secret)
+      .update(razorpay_order_id+"|"+razorpay_payment_id)
       .digest("hex");
 
     if (generated_signature === razorpay_signature) {
@@ -64,7 +64,7 @@ export const createOrder = async (req, res) => {
         user: userId,
         orderId: razorpay_order_id,
         paymentId: razorpay_payment_id,
-        status: "Success",
+        status: "SUCCESS",
         amount: cartItems.reduce(
           (total, item) => total + item?.quantity * item.price,
           0
@@ -79,7 +79,7 @@ export const createOrder = async (req, res) => {
           product: item?._id,
           quantity: item?.quantity,
         })),
-        status: "Order Placed",
+        status: "ORDER_PLACED",
       });
 
       transaction.order = order._id;
