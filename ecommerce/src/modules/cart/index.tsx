@@ -9,16 +9,17 @@ import {Colors} from '@utils/Constants';
 import OrderItem from './atoms/OrderItem';
 import PlaceOrderButton from './atoms/PlaceOrderButton';
 
-
 const Cart = () => {
   const renderItem = ({item}: any) => <OrderItem item={item} />;
+  const user = useAppSelector(state => state.account.user) as any;
   const carts = useAppSelector(selectCartItems);
   return (
     <CustomSafeAreaView>
       <View style={styles.container}>
-        <Text style={styles.heading}></Text>
+        <Text style={styles.heading}>My Cart</Text>
+        <Text style={styles.number}>{user?.phone && `Deliver to: ${user?.phone}`}</Text>
         <Text style={styles.address}>
-          Deliver to: Login first to place your order!
+          {user?.address ? user?.address : "Login first to place your orders!"}
         </Text>
       </View>
 
@@ -57,6 +58,10 @@ const styles = StyleSheet.create({
   address: {
     color: '#666',
     marginTop: 3,
+  },
+  number: {
+    color: "black",
+    fontWeight: "600"
   },
   heading: {
     fontSize: RFValue(14),

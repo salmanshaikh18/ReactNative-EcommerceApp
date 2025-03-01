@@ -10,11 +10,11 @@ import React, {useState} from 'react';
 import {RFValue} from 'react-native-responsive-fontsize';
 import {useAppSelector} from '@store/reduxHooks';
 import {selectTotalCartPrice} from '../api/slice';
+import LoginModal from '@modules/account/molecules/LoginModal';
 
 const PlaceOrderButton = () => {
-
   const price = useAppSelector(selectTotalCartPrice);
-  const [isVisible, setVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [loading, setLoading] = useState(false);
 
   return (
@@ -31,7 +31,7 @@ const PlaceOrderButton = () => {
         <TouchableOpacity
           disabled={loading}
           style={styles.button}
-          onPress={() => setVisible(true)}>
+          onPress={() => setIsVisible(true)}>
           {loading ? (
             <ActivityIndicator color="black" size="small" />
           ) : (
@@ -39,6 +39,10 @@ const PlaceOrderButton = () => {
           )}
         </TouchableOpacity>
       </View>
+
+      {isVisible && (
+        <LoginModal onClose={() => setIsVisible(false)} visible={isVisible} />
+      )}
     </>
   );
 };

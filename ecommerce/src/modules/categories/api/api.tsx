@@ -5,3 +5,4 @@ export const fetchCategoriesData = async () => {
   const response = await axios.get(`${BASE_URL}/category`);
   return response?.data?.categories;
 };
+

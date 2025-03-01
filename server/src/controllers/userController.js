@@ -10,12 +10,15 @@ export const authController = async (req, res) => {
 
     if (!user) {
       user = new User({ address, phone });
+      user.save()
     } else {
       user.address = address;
       await user.save();
     }
 
     const { accessToken, refreshToken } = generateTokens(user.toObject());
+
+    console.log("createdUser: ", user)
 
     res.status(200).json({
       success: true,
